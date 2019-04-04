@@ -1,9 +1,13 @@
 package com.iav.vlvollylearning;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -13,6 +17,7 @@ import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.iav.vlvollylearning.activity.AboutActivity;
 import com.iav.vlvollylearning.adapter.MenuAdapter;
 import com.iav.vlvollylearning.helper.Config;
 import com.iav.vlvollylearning.model.ImageSliderModel;
@@ -29,7 +34,6 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ImageView ivMenu;
     private RecyclerView rv;
     private ArrayList<MenuModel> menuModels;
     private MenuAdapter menuAdapter;
@@ -38,11 +42,14 @@ public class MainActivity extends AppCompatActivity {
     private PagerIndicator customIndicator2;
     private ArrayList<ImageSliderModel> imageSliderModels;
 
+    private Toolbar mTopToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+        setSupportActionBar(mTopToolbar);
         menuModels = new ArrayList<>();
         imageSliderModels = new ArrayList<>();
         getDataMenu();
@@ -119,10 +126,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        ivMenu = findViewById(R.id.iv_menu);
+        mTopToolbar = findViewById(R.id.toolbar);
         rv = findViewById(R.id.rv);
         mSliderSlider = findViewById(R.id.mSliderSlider);
         customIndicator = findViewById(R.id.custom_indicator);
         customIndicator2 = findViewById(R.id.custom_indicator2);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.setting) {
+            startActivity(new Intent(getApplicationContext(), AboutActivity.class));
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
